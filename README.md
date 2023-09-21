@@ -159,7 +159,7 @@ Go to the AWS console to verify the EC2 instance is created and wait for the ins
 The rest of the workshop will work from the eks-bastion ec2 instance.
 
 ### Step4: Create EKS Cluster
-Open the AWS console and connect to this eks-bastion EC2 instance. Configure the AWS Access Key and Security Key on eks-bastion EC2 instance. EKS deployment will take about 20 minutes. The ssh session will be expired if no keys are entered. We need to configure the keep alive packet to keep the session alive.
+Open the AWS console and connect to this eks-bastion EC2 instance. Configure the AWS Access Key and Security Key on eks-bastion EC2 instance. EKS deployment will take about 20 minutes. The ssh session will be expired if no keys are entered. We need to configure the keep-alive packet to keep the session alive.
 
     cat >~/.ssh/config <<EOF
      Host *
@@ -185,7 +185,7 @@ Verify eksctl is installed.
     eksctl version
 
 
-Prepare the cluster configuration file First we need to grab the private subnet id of our terraform-generated VPC resources so that we can deploy our EKS cluster to the VPC topology we just created. We should be able to achieve this by using jq command to parse the terraform output command.
+Prepare the cluster configuration file First we need to grab the private subnet ID of our terraform-generated VPC resources so that we can deploy our EKS cluster to the VPC topology we just created. We should be able to achieve this by using jq command to parse the terraform output command.
 
 
     # export VPC
@@ -316,12 +316,12 @@ Kustomize Version: v5.0.4-0.20230601165947-6ce0bf390ce3
 
 Set EKS cluster security group inbound rules
 
-We need to allow inbound TCP traffic from our eks-bastion EC2 instance to the EKS cluster. To achieve this, we can navigate to the EKS cluster console and switch to the Networking tab, and open the Additional security groups to add the inbound rules of the security group. image
+We need to allow inbound TCP traffic from our eks-bastion EC2 instance to the EKS cluster. To achieve this, we can navigate to the EKS cluster console and switch to the Networking tab, and open the Additional security groups to add the inbound rules of the security group.
 
 <img width="832" alt="image" src="https://github.com/mongodb-partners/MEAN_Stack_With_MongoDB_Atlas_On_Amazon_EKS/assets/101570105/1f1f75b0-84e6-4da0-b5a5-339a725ee049">
 
 
-Edit inbound rule to allow traffic originating from k8-bastion security group name aws-EC2 instance SG named eks-bastion-sg. image
+Edit inbound rule to allow traffic originating from k8-bastion security group name aws-EC2 instance SG named eks-bastion-sg.
 
 <img width="832" alt="image" src="https://github.com/mongodb-partners/MEAN_Stack_With_MongoDB_Atlas_On_Amazon_EKS/assets/101570105/7a07c48f-ac53-4e3a-8a90-ea7ca4130000">
 
@@ -350,7 +350,7 @@ kube-system   kube-proxy-mnhxh           1/1     Running   0          37m
 kube-system   kube-proxy-qbxkp           1/1     Running   0          37m
 
 
-**Install toolkit – Docker**
+##### **Install toolkit – Docker**
 
     sudo dnf update
     sudo dnf install docker -y
@@ -371,14 +371,14 @@ Client:
  Context:           default
  Experimental:      true
 
-**Test docker engine**
+##### **Test docker engine**
 
     docker run hello-world
 
 Hello from Docker!
 
 
-**Install toolkit – Helm**
+##### **Install toolkit – Helm**
 
 
     curl -sSL https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
@@ -388,17 +388,17 @@ Hello from Docker!
 
 version.BuildInfo{Version:"v3.12.3", GitCommit:"3a31588ad33fe3b89af5a2a54ee1d25bfe6eaa5e", GitTreeState:"clean", GoVersion:"go1.20.7"}
 
-**Install NodeJS Runtime**
+#### **Install NodeJS Runtime**
 
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
     . ~/.nvm/nvm.sh
     nvm install --lts
 
-**Install git on EC2 instance**
+#### **Install git on EC2 instance**
 
     sudo yum install git -y
 
-**Get the application code**
+#### **Get the application code**
 
     cd /home/ec2-user/environment
     
@@ -426,7 +426,7 @@ Set ~/environment/MEANStack_with_Atlas_on_Fargate/code/MEANSTACK/partner-meansta
 
 ATLAS_URI=mongodb+srv://eks-user:<password>@demo.xxxxxx.mongodb.net/?retryWrites=true&w=majoritywq
 
-**Install Docker compose on eks-baston EC2 instance**
+#### **Install Docker compose on eks-baston EC2 instance**
 
     sudo curl -L https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
 
@@ -436,7 +436,7 @@ ATLAS_URI=mongodb+srv://eks-user:<password>@demo.xxxxxx.mongodb.net/?retryWrites
 
 Docker Compose version v2.21.0
 
-**Create a repository on Elastic Container Registry(ECR)**
+#### **Create a repository on Elastic Container Registry(ECR)**
 
     aws ecr create-repository \
       --repository-name partner-meanstack-atlas-eks-client \
@@ -615,13 +615,13 @@ server-service   ClusterIP           172.20.38.49            <none>             
 
 Copy the server-nlb External-IP address and paste it to notepad for future use.
 
-Verify NLB target group is healthy Go to EC2  Target Groups and select the target group for NLB. There should be at least one target in health. This will take about 3 minutes. image
+Verify NLB target group is healthy Go to EC2  Target Groups and select the target group for NLB. There should be at least one target in health. This will take about 3 minutes.
 
 Get the URI of NLB Copy the server-nlb External-IP address and paste it to notepad for future use. The URI here is - k8s-mongodb-servernl-9c3c0762d8-xxxxxxxxxx.elb.us-east-1.amazonaws.com
 
 Set the NLB URI for the client
 
-Client uses file ~/environment/MEANStack_with_Atlas_on_Fargate/code/MEANSTACK/partner-meanstack-atlas-fargate/client/src/app/employee.service.ts to get NLB URI. This URI will be sent directly to the client browser. The client browser will use this URI to access the server.
+The client uses file ~/environment/MEANStack_with_Atlas_on_Fargate/code/MEANSTACK/partner-meanstack-atlas-fargate/client/src/app/employee.service.ts to get NLB URI. This URI will be sent directly to the client browser. The client browser will use this URI to access the server.
 
     cd ~/environment/MEANStack_with_Atlas_on_Fargate/code/MEANSTACK/partner-meanstack-atlas-fargate/client/src/app
 
@@ -779,7 +779,7 @@ ingress-client   <none>   *       k8s-mongodb-ingressc-4af057c13f-xxxxxxxxx.us-e
 Go to EC2 --> Load Balancer and wait until ALB is provisioned and the target group passes the health check. Copy the DNS name of ALB and open the browser with this DNS name
 
 ### Step5: Testing the Application
-Copy the DNS name of ALB and open the browser with this DNS name http://k8s-mongodb-ingressc-xxxxxxxx.us-east-1.elb.amazonaws.com image
+Copy the DNS name of ALB and open the browser with this DNS name http://k8s-mongodb-ingressc-xxxxxxxx.us-east-1.elb.amazonaws.com
 
 <img width="827" alt="image" src="https://github.com/mongodb-partners/MEAN_Stack_With_MongoDB_Atlas_On_Amazon_EKS/assets/101570105/c0046077-50ae-47f9-9496-194e261bd63a">
 
