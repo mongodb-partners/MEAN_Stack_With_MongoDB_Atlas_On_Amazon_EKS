@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment 
+metadata:
+  name: server-deployment
+  namespace: mongodb
+spec:
+  selector:
+    matchLabels:
+      app: server
+  template:
+    metadata:
+      labels:
+        app: server
+    spec:
+      containers:
+      - name: server
+        image: 023748615325.dkr.ecr.us-east-1.amazonaws.com/partner-meanstack-atlas-eks-server:latest # specify your ECR repository
+        ports:
+        - containerPort: 5200
+        resources:
+            limits:
+              cpu: 500m
+            requests:
+              cpu: 250m
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: server-service
+  namespace: mongodb
+  labels:
+    app: server
+spec:
+  selector:
+    app: server
+  ports:
+    - protocol: TCP
+      port: 5200 
+      targetPort: 5200
