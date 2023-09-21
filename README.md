@@ -810,5 +810,5 @@ Go to the AWS VPC console. Delete NAT gateway, delete VPC named k8-vpc.
 Go to the AWS ECR console and delete repository for server and client
 
 ## Summary
-Hope this provides the steps to successfully deploy the containerized application onto AWS EKS. Please share your feedback/queries to partners@mongodb.com
+Hope this provides the steps to successfully deploy the containerized application onto Amazon EKS. Please share your feedback/queries to partners@mongodb.com
 
